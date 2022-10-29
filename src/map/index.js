@@ -2,7 +2,7 @@ import {
   select,
   geoPath,
   geoMercator,
-  scaleThreshold,
+  // scaleThreshold,
   easeLinear,
   selectAll,
 } from "d3";
@@ -17,8 +17,8 @@ const Map = ({ travel }) => {
     var width = window.innerWidth,
       height = window.innerHeight;
 
-    var colorRange = ["#1a9850", "#66bd63"];
-    var travelColorDomain = [0, 1];
+    // var colorRange = ["#1a9850", "#66bd63"];
+    // var travelColorDomain = [0, 1];
 
     // Select SVG element
     var svg = select(mapRef.current)
@@ -34,20 +34,11 @@ const Map = ({ travel }) => {
 
     var path = geoPath().projection(projection);
 
-    function ready(error, data, population) {
-      if (error) throw error;
-
-      // Population data
-      var populationData = {};
-
-      population.forEach(function (d) {
-        populationData[d.id] = +d.population;
-      });
-
+    function ready(data) {
       // Color
-      var renderTravelColor = scaleThreshold()
-        .domain(travelColorDomain)
-        .range(colorRange);
+      // var renderTravelColor = scaleThreshold()
+      //   .domain(travelColorDomain)
+      //   .range(colorRange);
 
       var g = svg.append("g");
 
@@ -104,8 +95,9 @@ const Map = ({ travel }) => {
       selectAll("path").attr("d", path);
     }
 
-    ready(null, cities, []);
-  }, []);
+    ready(cities);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [travel]);
 
   return <svg ref={mapRef}></svg>;
 };
